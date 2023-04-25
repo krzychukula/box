@@ -1,4 +1,5 @@
 import { h, text, app } from "https://esm.run/hyperapp";
+import html from "https://unpkg.com/hyperlit";
 import { beep } from "./beep.js";
 
 const angle = (t) => (2 * Math.PI * t) / 60000;
@@ -48,40 +49,41 @@ const Tick = (state, time) => [
   },
 ];
 
+const svg = (time) =>
+  h("svg", { viewBox: "0 0 100 100", width: "40%", "stroke-width": 2 }, [
+    h("circle", {
+      cx: 50,
+      cy: 50,
+      r: 45,
+      stroke: "#0366d6",
+      fill: "white",
+    }),
+    h("line", {
+      x1: "50",
+      y1: "50",
+      x2: 50 + 40 * Math.cos(angle(time)),
+      y2: 50 + 40 * Math.sin(angle(time)),
+      stroke: "#0366d6",
+      "stroke-width": 3,
+    }),
+  ]);
+
 app({
   init: [{ time: void Infinity, boxSize: 6 }, now(Tick)],
-  view: ({ time, boxSize }) =>
-    main(
-      title("Box Breathing"),
-      p("Pick number of seconds for inhale, hold, exhale, hold."),
-      input(
-        withPayload(({ target }) => [SetBoxSize, +target.value]),
-        {
-          placeholder: "Number of seconds",
-          value: boxSize,
-          type: "number",
-          min: 1,
-          max: 100,
-        }
-      ),
-      h("svg", { viewBox: "0 0 100 100", width: "40%", "stroke-width": 2 }, [
-        h("circle", {
-          cx: 50,
-          cy: 50,
-          r: 45,
-          stroke: "#0366d6",
-          fill: "white",
-        }),
-        h("line", {
-          x1: "50",
-          y1: "50",
-          x2: 50 + 40 * Math.cos(angle(time)),
-          y2: 50 + 40 * Math.sin(angle(time)),
-          stroke: "#0366d6",
-          "stroke-width": 3,
-        }),
-      ])
-    ),
+  view: ({ time, boxSize }) => html` <main>
+    <h1>Box Breathing</h1>
+    <p>Pick number of seconds for inhale, hold, exhale, hold.</p>
+    <input
+      placeholder="Number of seconds"
+      value=${boxSize}
+      oninput=${withPayload(({ target }) => [SetBoxSize, +target.value])}
+      min="1"
+      max="100"
+      type="number"
+    />
+    <p>Time: ${time}</p>
+    ${svg(time)}
+  </main>`,
   subscriptions: () => [every(1000, Tick)],
   node: document.getElementById("app"),
 });
