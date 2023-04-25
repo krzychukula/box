@@ -49,24 +49,18 @@ const Tick = (state, time) => [
   },
 ];
 
-const svg = (time) =>
-  h("svg", { viewBox: "0 0 100 100", width: "40%", "stroke-width": 2 }, [
-    h("circle", {
-      cx: 50,
-      cy: 50,
-      r: 45,
-      stroke: "#0366d6",
-      fill: "white",
-    }),
-    h("line", {
-      x1: "50",
-      y1: "50",
-      x2: 50 + 40 * Math.cos(angle(time)),
-      y2: 50 + 40 * Math.sin(angle(time)),
-      stroke: "#0366d6",
-      "stroke-width": 3,
-    }),
-  ]);
+const svg = (time) => html`
+  <svg width="40%" height="100%" viewBox="0 0 100 100" stroke-width="2">
+    <circle cx="50" cy="50" r="45" stroke="#0366d6" fill="white" />
+    <line
+      x1="50"
+      y1="50"
+      x2="${50 + 40 * Math.cos(angle(time))}"
+      y2="${50 + 40 * Math.sin(angle(time))}"
+      stroke="#0366d6"
+    />
+  </svg>
+`;
 
 app({
   init: [{ time: void Infinity, boxSize: 6 }, now(Tick)],
