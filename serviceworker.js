@@ -1,3 +1,6 @@
+// https://developer.mozilla.org/en-US/docs/Web/API/FetchEvent
+// https://web.dev/learn/pwa/caching/
+
 // This code executes in its own worker or thread
 self.addEventListener("install", (event) => {
   console.log("Service worker installed");
