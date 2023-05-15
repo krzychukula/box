@@ -1,6 +1,11 @@
 import { h, text, app } from "https://esm.run/hyperapp";
 import html from "https://unpkg.com/hyperlit";
 import { beep } from "./beep.js";
+import "./wake-lock.js";
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/serviceworker.js");
+}
 
 const angle = (t) => (2 * Math.PI * t) / 60000;
 
