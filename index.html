@@ -5,9 +5,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Box Breathing</title>
-    <script src="app.js" type="module"></script>
+    <meta name="view-transition" content="same-origin" />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <main id="app"></main>
+    <main id="app">
+      <form id="js-box-time" action="/">
+        <label for="time">Box Breathing time:</label>
+        <div class="row">
+          <input
+            value="4"
+            id="time"
+            name="time"
+            type="range"
+            min="3"
+            max="9"
+            oninput="rangevalue.value=value"
+          />
+          <output id="rangevalue">4</output>
+        </div>
+      </form>
+      <div class="container">
+        <div class="path xywh-path">→</div>
+      </div>
+    </main>
+    <script src="app.js" type="module"></script>
   </body>
 </html>
