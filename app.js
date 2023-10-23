@@ -1,4 +1,5 @@
 import "./wake-lock.js";
+import { ZZFX, zzfx } from "/node_modules/zzfx/ZzFX.js";
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/serviceworker.js");
@@ -7,7 +8,14 @@ if ("serviceWorker" in navigator) {
 const url = new URL(location);
 const form = document.getElementById("js-box-time");
 const timeInput = document.getElementById("time");
+const playSoundInput = document.getElementById("play-sound");
 const path = document.querySelector(".path");
+const animation = path.getAnimations().find((a) => a.animationName == "move");
+
+let canPlay = false;
+playSoundInput.addEventListener("change", (e) => {
+  canPlay = e.target.checked;
+});
 
 const time = +url.searchParams.get("time");
 
@@ -35,10 +43,9 @@ function setTime(ev) {
     url.searchParams.set("time", time);
     history.pushState({}, "", url);
     setAnimationTime(time);
-    path.getAnimations().forEach((anim) => {
-      anim.cancel();
-      anim.play();
-    });
+
+    animation.cancel();
+    animation.play();
   }
 }
 
@@ -46,4 +53,24 @@ form.addEventListener("submit", setBreathingTime);
 
 function setBreathingTime(event) {
   event.preventDefault();
+}
+
+let lastTime = time;
+function tick() {
+  if (canPlay) {
+    const { currentTime } = animation;
+    const stepTime = currentTime % (time * 1000);
+
+    if (stepTime < lastTime) {
+      playSound();
+    }
+    lastTime = stepTime;
+  }
+
+  requestAnimationFrame(tick);
+}
+requestAnimationFrame(tick);
+
+function playSound() {
+  zzfx(...[795, , 10, , , 0.01, 4, 2.38, , 42, , , , , , , 0.01, 0.73]); // Blip 128
 }

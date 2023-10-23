@@ -15,6 +15,12 @@ form {
     margin-bottom: 3rem;
 }
 
+aside {
+    margin: 1rem;
+    font-size: 2rem;
+    display: flex;
+}
+
 .row {
     display: flex;
     align-items: center;
@@ -28,6 +34,10 @@ input[type="range"] {
     height: 1rem;
     padding: 1rem;
     margin: 1rem 0;
+}
+
+input[type=checkbox] {
+    transform: scale(1.6);
 }
 
 output {
