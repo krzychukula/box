@@ -1,5 +1,5 @@
 import "./wake-lock.js";
-import { ZZFX, zzfx } from "/node_modules/zzfx/ZzFX.js";
+import { zzfx } from "./zzfx.js";
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/serviceworker.js");
